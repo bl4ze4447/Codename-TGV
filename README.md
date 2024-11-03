@@ -5,6 +5,9 @@ I do not remember how I stumbled upon [Nick Blundell's book](https://www.cs.bham
 I always wanted to start programming something that would be considered low-level but I never knew how to do it; I did not know assembly at all, but this book really helped me understand it better and...bonus points: 
 * I am able to put this knowledge into something really cool! (at least for me, because I'm a nerd) 
 
-### Build and usage
+## Build and usage
 Use make to build for now. You will have a file in ```nasm/bootloader/``` named ```boot_sector.bin```. That is your image.
 You can use any VM able to run .bin files as images. 
+
+## License
+This repository is licensed under the ```MIT License```.

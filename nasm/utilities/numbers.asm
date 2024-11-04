@@ -47,4 +47,4 @@ _digit_to_hex_char:
     add ax, 0x7             ; '0' = 48 in ascii + remainder (0xA for example) = 58; 'A' in ascii = 65
     ret
 
-HEX_OUT: db '0x0000',0
+HEX_OUT db '0x0000', 0

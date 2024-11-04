@@ -6,31 +6,36 @@ print_hex:
     jmp get_hex_remainder
 
 get_hex_remainder:
+    ; push remainder
     mov al, [bx]
-    and al, 15
+    and al, 0x0F
     push al
-    shr [bx], 4
+    ; divide by 16
+    mov al, [bx]
+    shr al, 4
+    mov [bx], al
+    ; compare
     cmp [bx], 0
     jne get_hex_remainder
 
 print_hex_check:
     pop al
-    cmp al, 16 
+    cmp al, 16 ; is stack end?
     jne print_hex_digit
     je print_hex_end
 
 print_hex_digit:
     cmp al, 9
-    jg digit_to_char
-    jnge digit_to_digit
+    jg digit_to_char ; >9
+    jle digit_to_digit ; <=9
     
 digit_to_char:
-    add al, 30
+    add al, 55
     int 0x10
     jmp print_hex_check
     
 digit_to_digit
-    add al, 60
+    add al, 48
     int 0x10
     jmp print_hex_check
 

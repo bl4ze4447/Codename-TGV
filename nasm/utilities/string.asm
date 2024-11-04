@@ -2,15 +2,15 @@
 print_string:
     pusha 
     mov ah, 0x0e ; bios teletype mode
-    jmp print_loop
+    jmp _print_loop
 
 _print_loop:
     mov al, [bx]
     cmp al, 0
-    je print_end
+    je _print_end
     int 0x10
     inc bx
-    jmp print_loop
+    jmp _print_loop
 
 _print_end:
     popa

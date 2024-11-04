@@ -1,17 +1,21 @@
 [org 0x7c00]
 
-
-mov bx, SZ_GREET    ; fun parameter
-call print_string   
-
+mov dx, 4095
+call print_hex
 call new_line
+mov dx, 16
+call print_hex
+call new_line 
+mov dx, 10
+call print_hex
 
-mov bx, SZ_BYE      ; fun parameter
-call print_string
+
+
 
 jmp $ ; Hang
 
 %include "nasm/utilities/string.asm"
+%include "nasm/utilities/numbers.asm"
 
 ; Data
 SZ_GREET:

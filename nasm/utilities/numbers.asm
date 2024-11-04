@@ -1,52 +1,50 @@
-; start
 print_hex:
-    pusha
-    mov ah, 5 ; end of HEX_OUT
-    jmp get_hex_remainder
+    mov cx, 5
+    pusha 
 
-get_hex_remainder:
-    ; push remainder
-    mov al, [dx]
-    and al, 0x0F
-    call convert_to_ascii
-    mov [HEX_OUT+ah], al
-    sub ah, 1
-    
-    ; divide by 16
-    mov al, [dx]
-    shr al, 4
-    mov [dx], al
-    ; compare
-    cmp [dx], 0
-    jne get_hex_remainder
-    je print_hex_end
+_generate_hex:
+    mov ax, dx 
+    and ax, 0x0F            ; get remainder 
+    shr dx, 4               ; divide by 16
 
-convert_to_ascii:
-    cmp al, 9
-    jg digit_to_char ; >9
-    add al, 48
-    ret
-    
-digit_to_char:
-    add al, 55
-    ret
+    mov bx, HEX_OUT         ; move to start of string
+    add bx, cx
 
-print_hex_end:
-    mov bx, HEX_OUT
-    call print_string
-    mov ah, 2
-    call clear_buffer
+    call _convert_to_ascii  ; get value to add to bx
+    add [bx], ax
+
+    cmp cx, 2   
+    je _print_hex_end
+
+    dec cx
+
+    cmp dx, 0
+    jne _generate_hex
+
+_print_hex_end:
+    mov bx, HEX_OUT         ; go back to beggining of string
+    call print_string 
+    mov cx, 2
+    call _clear_buffer
     popa
     ret
-; end
 
-clear_buffer:
-    mov [HEX_OUT+ah], '0'
-    inc ah
-    cmp ah, 6
-    jle clear_buffer
+_clear_buffer:
+    mov bx, HEX_OUT
+    add bx, cx
+    mov byte [bx], '0'
+    inc cx 
+    cmp cx, 6
+    jne _clear_buffer
+    ret 
+
+_convert_to_ascii:
+    cmp ax, 0xA
+    jge _digit_to_hex_char
+    ret 
+
+_digit_to_hex_char:
+    add ax, 0x7             ; '0' = 48 in ascii + remainder (0xA for example) = 58; 'A' in ascii = 65
     ret
-   
 
-HEX_OUT:
-    db '0x0000', 0
+HEX_OUT: db '0x0000',0

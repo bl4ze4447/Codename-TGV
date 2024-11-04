@@ -11,9 +11,7 @@ get_hex_remainder:
     and al, 0x0F
     push al
     ; divide by 16
-    mov al, [bx]
-    shr al, 4
-    mov [bx], al
+    shr [bx], 4
     ; compare
     cmp [bx], 0
     jne get_hex_remainder

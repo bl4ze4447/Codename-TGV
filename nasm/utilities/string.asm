@@ -4,7 +4,7 @@ print_string:
     mov ah, 0x0e ; bios teletype mode
     jmp print_loop
 
-print_loop:
+_print_loop:
     mov al, [bx]
     cmp al, 0
     je print_end
@@ -12,7 +12,7 @@ print_loop:
     inc bx
     jmp print_loop
 
-print_end:
+_print_end:
     popa
     ret
 ; end

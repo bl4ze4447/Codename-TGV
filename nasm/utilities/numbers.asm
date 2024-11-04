@@ -24,22 +24,29 @@ get_hex_remainder:
 convert_to_ascii:
     cmp al, 9
     jg digit_to_char ; >9
-    jle digit_to_digit ; <=9
+    add al, 48
+    ret
     
 digit_to_char:
     add al, 55
     ret
-    
-digit_to_digit
-    add al, 48
-    ret
 
 print_hex_end:
     mov bx, HEX_OUT
-    print_string
+    call print_string
+    mov ah, 2
+    call clear_buffer
     popa
     ret
 ; end
+
+clear_buffer:
+    mov [HEX_OUT+ah], '0'
+    inc ah
+    cmp ah, 6
+    jle clear_buffer
+    ret
+   
 
 HEX_OUT:
     db '0x0000', 0

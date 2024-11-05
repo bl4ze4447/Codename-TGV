@@ -2,7 +2,6 @@
 print_string:
     pusha 
     mov ah, 0x0e ; bios teletype mode
-    jmp _print_loop
 
 _print_loop:
     mov al, [bx]

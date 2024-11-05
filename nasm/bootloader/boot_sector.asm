@@ -20,9 +20,9 @@
 
 jmp $
 
-%include "nasm/utilities/string.asm"
-%include "nasm/utilities/numbers.asm"
-%include "nasm/utilities/disk.asm"
+%include "nasm/utilities/16bit/string.asm"
+%include "nasm/utilities/16bit/numbers.asm"
+%include "nasm/utilities/16bit/disk.asm"
 
 BOOT_DRIVE db 0
 

@@ -7,7 +7,7 @@
     call print_string
     call new_line
 
-    ; call switch_to_pm
+    call switch_to_pm
 
     jmp $
 

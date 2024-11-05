@@ -3,13 +3,14 @@
     mov bp, 0x9000
     mov sp, bp
 
-    mov bx, [MSG_REAL_MODE]
+    mov bx, MSG_REAL_MODE
     call print_string
     call new_line
 
-    call switch_to_pm
+    ; call switch_to_pm
 
     jmp $
+
 
 %include "nasm/utilities/16bit/string.asm"
 %include "nasm/bootloader/gdt.asm"

@@ -20,6 +20,6 @@ run: create_image
 	qemu-system-x86_64 -fda os-image
 
 clean:
-	rm os-image 
-	rm kernel/bin/*
-	rm boot/bin/*
+	rm -rf os-image 
+	rm -rf kernel/bin/*
+	rm -rf boot/bin/*

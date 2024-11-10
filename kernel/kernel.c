@@ -1,4 +1,4 @@
-#include "utilities/vga.h"
+#include "utilities/vgamanip.h"
 
 void main() {
     vga_tm out;

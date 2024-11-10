@@ -1,5 +1,5 @@
-#ifndef INT_TYPES
-#define INT_TYPES
+#ifndef H_FIXED_SIZE_INT
+#define H_FIXED_SIZE_INT
 
 typedef long long int                   int64;
 typedef unsigned long long  int         uint64;

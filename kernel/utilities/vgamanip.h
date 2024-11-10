@@ -1,7 +1,7 @@
-#ifndef VGA_H
-#define VGA_H 
+#ifndef VGAMANIP_H
+#define VGAMANIP_H 
 
-#include "inttypes.h"
+#include "fxs_int.h"
 
 #define VGA_COLUMNS         80
 #define VGA_ROWS            25

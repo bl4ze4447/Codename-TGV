@@ -1,4 +1,4 @@
-#include "vga.h"
+#include "vgamanip.h"
 
 void init_vga_tm(vga_tm *out) {
     out->row = 0;

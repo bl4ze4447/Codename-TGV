@@ -1,4 +1,4 @@
-#include "string.h"
+#include "kstring.h"
 
 uint32 strlen(const char *s) {
     const char *sc;

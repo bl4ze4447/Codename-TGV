@@ -6,8 +6,8 @@ I always wanted to start programming something that would be considered low-leve
 * I am able to put this knowledge into something really cool! (at least for me, because I'm a nerd) 
 
 ## Build and usage
-Use make to build for now. You will have a file in ```nasm/bootloader/``` named ```boot_sector.bin```. That is your image.
-You can use any VM able to run .bin files as images. 
+Use ```make run``` to compile and run the file.
+You need: make, nasm, gcc, ld, cat, qemu-system-x86_64 and rm. Most of them come preinstalled on various Linux Distros.
 
 ## License
 This repository is licensed under the ```MIT License```.

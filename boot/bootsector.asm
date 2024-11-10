@@ -27,6 +27,7 @@ load_kernel:
     mov bx, MSG_LOAD_KERNEL
     call print_line
     
+    mov bx, KERNEL_OFFSET  
     mov dh, 15                  ; first 15 sectors
     mov dl, [BOOT_DRIVE]        ; boot_drive
     call disk_load              ; load first 15 sectors from the boot_drive

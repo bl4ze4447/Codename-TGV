@@ -1,4 +1,4 @@
-# b-ost, a fun project ![C](https://img.shields.io/badge/Language-C-blue) ![NASM](https://img.shields.io/badge/Language-NASM-blue) 
+# b-ost, a fun project ![C](https://img.shields.io/badge/Language-C-blue) ![NASM](https://img.shields.io/badge/Assembler-NASM-blue) 
 
 I do not remember how I stumbled upon [Nick Blundell's book](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf), but one thing is certain: I fell in love with it. 
 

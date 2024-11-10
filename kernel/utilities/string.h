@@ -1,12 +1,8 @@
-#ifndef STRING
-#define STRING
+#ifndef H_STRING
+#define H_STRING
+
 #include "inttypes.h"
 
-uint32 strlen(const char *s) {
-    const char *sc;
-    for (sc = s; *sc != '\0'; ++sc);
-
-    return sc - s;
-}
+uint32 strlen(const char *s);
 
 #endif 

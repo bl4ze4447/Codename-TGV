@@ -13,12 +13,12 @@ _generate_hex:
     call _convert_to_ascii  ; get value to add to bx
     add [bx], ax
 
-    cmp cx, 2   
+    cmp cx, 2               ; sanity check for me
     je _print_hex_end
 
     dec cx
 
-    cmp dx, 0
+    cmp dx, 0               ; no more remainders
     jne _generate_hex
 
 _print_hex_end:

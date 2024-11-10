@@ -34,3 +34,8 @@ new_line:
     popa
     ret
 ; end
+
+print_line:
+    call print_string
+    call new_line
+    ret

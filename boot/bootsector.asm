@@ -43,7 +43,7 @@ BEGIN_PM:
     mov ebx, MSG_PROT_MODE
     call print_string32
 
-    call KERNEL_OFFSET          ; give up control to kernel
+    call KERNEL_OFFSET          ; give control to kernel
 
     jmp $
 

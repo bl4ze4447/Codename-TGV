@@ -1,3 +1,4 @@
 boot/bin/*
 kernel/bin/*
 os-image
+*.o

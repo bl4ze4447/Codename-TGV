@@ -1,8 +1,10 @@
-#include "utilities/string.h"
+#include "utilities/vga.h"
 
 void main() {
-    char *vga_mem = (char*)0xb8000;
-    const char *message = "Hello from the C Kernel!";
-    uint32 len = strlen(message), i = 0, col = 0;
-    for (; i < len; ++i, col += 2) vga_mem[col] = message[i];
+    vga_tm out;
+    init_vga_tm(&out);
+    out.row = 1;  // Set to row 1 for second line
+    write_line(&out, "(Kernel) Code execution moved to Kernel.");
+    write(&out, "(Kernel) This should be on the third row.");
 }
+

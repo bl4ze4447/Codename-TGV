@@ -7,6 +7,7 @@ CFLAGS+="-fno-stack-protector"
 CFLAGS+="-ffreestanding"
 CFLAGS+="-m32"
 CFLAGS+="-fno-pic"
+CFLAGS+="-fno-strict-aliasing"
 
 KERNEL="kernel/kernel.c"
 KERNEL_O="kernel/bin/kernel.o"
@@ -18,7 +19,7 @@ BOOTSECTOR_BIN="boot/bin/bootsector.bin"
 
 # Run the built image
 run: os_image
-	qemu-system-x86_64 -fda os-image
+	qemu-system-i386 -drive file=os-image,format=raw
 
 # Create the os image from the kernel and bootsector 
 # binary files
@@ -28,7 +29,7 @@ os_image: kernel.bin bootsector.bin
 # Create the binary files from the kernel and kernel_entry
 # object files
 kernel.bin: kernel.o kernel_entry.o ${OBJ}
-	ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_O) $(KERNEL_LINK_O) $(OBJ) --oformat binary
+	ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_O) $(KERNEL_LINK_O) $(OBJ) --oformat binary --entry main
 
 # Create the kernel object file
 kernel.o:

@@ -1,3 +1,6 @@
+// TODO: Easy color switching
+// Enum of colors available for VGA
+
 #ifndef VGAMANIP_H
 #define VGAMANIP_H 
 
@@ -8,10 +11,10 @@
 #define VGA_ADDRESS         0xb8000
 
 typedef struct __attribute__((packed)) _vga_text_mode {
-    int row;
-    int column;
-    int bg;
-    int fg;
+    uint8 row;
+    uint8 column;
+    uint8 bg;
+    uint8 fg;
     volatile uint16 *mem;
 } vga_tm;
 

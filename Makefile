@@ -8,6 +8,7 @@ CFLAGS+="-ffreestanding"
 CFLAGS+="-m32"
 CFLAGS+="-fno-pic"
 CFLAGS+="-fno-strict-aliasing"
+CFLAGS+="-nostdlib"
 
 KERNEL="kernel/kernel.c"
 KERNEL_O="kernel/bin/kernel.o"

@@ -10,4 +10,7 @@ typedef unsigned short int              uint16;
 typedef char                            int8;
 typedef unsigned char                   uint8;
 
+typedef unsigned short int              word;
+typedef unsigned char                   byte;
+
 #endif

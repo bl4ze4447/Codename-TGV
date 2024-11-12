@@ -62,6 +62,6 @@ void clear_screen(vga_tm *out);
 
 // __prefixed = uncallable
 static void __scroll(vga_tm *out);
-void __set_cursor(uint8 r, uint8 c);
+static void __set_cursor(uint8 r, uint8 c);
 
 #endif

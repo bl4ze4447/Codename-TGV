@@ -80,7 +80,7 @@ static void __scroll(vga_tm *out) {
     out->column = 0;
     __set_cursor(out->row, out->column);
 }
-void __set_cursor(uint8 r, uint8 c) {
+static void __set_cursor(uint8 r, uint8 c) {
     uint16 offset = (r * VGA_COLUMNS) + c;
     byte crtc_address = read_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER);
 

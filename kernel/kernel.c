@@ -1,5 +1,4 @@
 #include "utilities/vgamanip.h"
-#include "utilities/kstring.h"
 
 void main() {
     vga_tm out;

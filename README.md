@@ -21,6 +21,7 @@ You need: make, nasm, gcc, ld, cat, qemu-system-x86_64 and rm. Most of them come
 * [OSDev Wiki](https://wiki.osdev.org/)
 * [x86 Instruction Set](https://www.felixcloutier.com/x86/)
 * [osdever](http://www.osdever.net/FreeVGA/vga/portidx.htm)
+* [ctyme](https://www.ctyme.com/intr/) ; rb-1338,1337,1336
 
 ## License
 This repository is licensed under the ```MIT License```.

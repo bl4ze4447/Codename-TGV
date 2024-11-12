@@ -1,18 +1,23 @@
 [org 0x7c00]
 KERNEL_OFFSET equ 0x1000
-
     mov [BOOT_DRIVE], dl            ; DL is used to store the bootdrive
 
     mov bp, 0x9000                  ; Set up the stack
-    mov sp, bp
-
-    mov bx, MSG_REAL_MODE        
-    call print_line                 ; show message to user      
+    mov sp, bp    
 
     call is_a20_enabled
     cmp ax, 1
-    jne $                           
+    je a20_enabled
+    
+    call enable_a20
+    cmp ax, 1
+    je a20_enabled
 
+    mov bx, MSG_A20_INACTIVE
+    call print_line
+    jmp $
+
+a20_enabled:
     call load_kernel                ; load our kenel into memory
 
     call switch_to_pm               ; everything is set up, we can switch to protected mode now
@@ -28,10 +33,7 @@ KERNEL_OFFSET equ 0x1000
 
 [bits 16]
 
-load_kernel:
-    mov bx, MSG_LOAD_KERNEL
-    call print_line
-    
+load_kernel:  
     mov bx, KERNEL_OFFSET  
     mov dh, 15                  ; first 15 sectors
     mov dl, [BOOT_DRIVE]        ; boot_drive
@@ -45,18 +47,13 @@ load_kernel:
 [bits 32]
 
 BEGIN_PM:
-    mov ebx, MSG_PROT_MODE
-    call print_string32
-
     call KERNEL_OFFSET          ; give control to kernel
 
     jmp $
 
 BOOT_DRIVE              db 0
-MSG_REAL_MODE           db '(16-bit) Real Mode loaded.', 0
-MSG_PROT_MODE           db '(32-bit) Protected Mode loaded.', 0
-MSG_LOAD_KERNEL         db '(16-bit) Trying to load kernel in memory.', 0
-MSG_KERNEL_LOADED       db '(16-bit) Succesfully loaded kernel in memory.'
+MSG_KERNEL_LOADED       db '(16-bit) Succesfully loaded kernel in memory.', 0
+MSG_A20_INACTIVE        db '(16-bit) Could not activate a20 line, stopped.', 0
 
 times 510-($-$$) db 0   ; padding
 dw 0xaa55               ; magic number

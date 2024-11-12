@@ -48,5 +48,23 @@ _a20_enabled:
     popf
     ret
 
+enable_a20:
+    mov ax, 0x2403
+    int 0x15
+    jnc _check_a20_gate_status
+    mov ax, 0               ; no support for a20
+    ret
+_check_a20_gate_status:
+    mov ax, 0x2402          
+    int 0x15
+    jnc _enable_a20_gate
+    mov ax, 0               ; cannot get status
+    ret
+_enable_a20_gate 
+    mov ax, 0x2401
+    int 0x15
+    call is_a20_enabled
+    ret
+
 a20_below: db 0
 a20_above db 0

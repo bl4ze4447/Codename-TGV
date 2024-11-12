@@ -7,7 +7,11 @@ KERNEL_OFFSET equ 0x1000
     mov sp, bp
 
     mov bx, MSG_REAL_MODE        
-    call print_line                 ; show message to user                                 
+    call print_line                 ; show message to user      
+
+    call is_a20_enabled
+    cmp ax, 1
+    jne $                           
 
     call load_kernel                ; load our kenel into memory
 
@@ -16,6 +20,7 @@ KERNEL_OFFSET equ 0x1000
     jmp $
 
 %include "boot/gdt.asm"
+%include "boot/utilities/16bit/a20_line.asm"
 %include "boot/utilities/16bit/string.asm"
 %include "boot/utilities/16bit/disk.asm"
 %include "boot/utilities/32bit/string.asm"

@@ -53,7 +53,7 @@ void init_vga_tm(vga_tm *out);
 // color manip
 void set_foreground(vga_color *fg, vga_color color);
 void set_background(vga_color *bg, vga_color color);
-void set_color_attribute(vga_tm *out, vga_color bg, vga_color fg);
+void set_color_attribute(vga_tm *out, uint8 bg, uint8 fg);
 
 // write
 void write(vga_tm *out, const char *s);
@@ -63,5 +63,6 @@ void clear_screen(vga_tm *out);
 // __prefixed = uncallable
 static void __scroll(vga_tm *out);
 static void __set_cursor(uint8 r, uint8 c);
+static inline uint16 __make_attribute(char c, uint8 fg, uint8 bg); 
 
 #endif

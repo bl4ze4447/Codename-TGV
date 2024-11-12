@@ -19,7 +19,7 @@ void set_background(vga_color *bg, vga_color color) {
 
     *bg = color;
 }
-void set_color_attribute(vga_tm *out, vga_color bg, vga_color fg) {
+void set_color_attribute(vga_tm *out, uint8 bg, uint8 fg) {
     if (!out) return;
 
     out->bg = bg;
@@ -42,7 +42,7 @@ void write(vga_tm *out, const char *s) {
             continue;
         }
 
-        out->mem[(out->row * VGA_COLUMNS) + out->column++] = (*s) | ((out->fg | (out->bg << 4)) << 8);
+        out->mem[(out->row * VGA_COLUMNS) + out->column++] = __make_attribute(*s, out->fg, out->bg);
     }
 
     __set_cursor(out->row, out->column);
@@ -58,7 +58,7 @@ void clear_screen(vga_tm *out) {
     uint8 r = 0, c;
     for (; r < VGA_ROWS; ++r) {
         for (c = 0; c < VGA_COLUMNS; ++c) {
-            out->mem[(r * VGA_COLUMNS) + c] = (' ') | ((out->fg | (out->bg << 4)) << 8);
+            out->mem[(r * VGA_COLUMNS) + c] = __make_attribute(' ', out->fg, out->bg);
         }
     } 
     
@@ -73,7 +73,7 @@ static void __scroll(vga_tm *out) {
         }
     }
     for (c = 0; c < VGA_COLUMNS; ++c) { 
-        out->mem[(r * VGA_COLUMNS) + c] = (' ') | ((out->fg | (out->bg << 4)) << 8);
+        out->mem[(r * VGA_COLUMNS) + c] = __make_attribute(' ', out->fg, out->bg);
     }
 
     out->row = VGA_ROWS-2;
@@ -91,4 +91,9 @@ static void __set_cursor(uint8 r, uint8 c) {
 
     // restore CRTC_CONTROLLER_ADDRESS
     write_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER, crtc_address);
+}
+static inline uint16 __make_attribute(char c, uint8 fg, uint8 bg) {
+    // 0000 0000 0000 0000
+    // bgbg fgfg cccc cccc
+    return c | ((fg | (bg << 4)) << 8);
 }

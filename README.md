@@ -15,5 +15,11 @@ You need: make, nasm, gcc, ld, cat, qemu-system-x86_64 and rm. Most of them come
 ## Upcoming
 - Keyboard driver
 
+## Resources I am currently using or used
+* [Nick Blundell's book](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf)
+* [Intel® 64 and IA-32 Architectures Software Developer Manuals](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
+* [OSDev Wiki](https://wiki.osdev.org/)
+* [x86 Instruction Set](https://www.felixcloutier.com/x86/)
+
 ## License
 This repository is licensed under the ```MIT License```.

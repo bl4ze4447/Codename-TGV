@@ -2,7 +2,7 @@
 
 
 /*
-__asm__ ("instrucțiune" : output_operands : input_operands : clobbered_registers)
+__asm__ ("instruction" : output_operands : input_operands : clobbered_registers)
  */
 
 // https://c9x.me/x86/html/file_module_x86_id_139.html

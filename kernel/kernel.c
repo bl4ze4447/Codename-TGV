@@ -1,18 +1,25 @@
 #include "utilities/vgamanip.h"
+#include "utilities/kstring.h"
 
 void main() {
     vga_tm out;
     init_vga_tm(&out);
-    out.row = 1;  // Set to row 1 for second line
-    write(&out, "(Kernel) Code execution moved to the "); 
-    out.bg = 3;
-    write(&out, "kernel");
-    out.bg = 0;
-    write_line(&out, "!"); 
-    write(&out, "(Kernel) Welcome to ");
-    out.bg = 3;
-    write(&out, "b-ost");
-    out.bg = 0;
-    write_line(&out, "!");
+    clear_screen(&out);
+
+    write(&out, ">> b-ost v0.1, release date: 11/2024\n>> Version 0.0.1 (main.beta.alpha)\n\n");
+
+    set_background(&out.bg, VGA_GREEN);
+    write(&out, "(KSucces)");
+
+    set_background(&out.bg, VGA_BLACK);
+    write(&out, " > Kernel is running.\n");
+
+    set_background(&out.bg, VGA_CYAN);
+    write(&out, "(b-ost)");
+
+    set_background(&out.bg, VGA_BLACK);
+    write(&out, " > ");
+
+    while (1) {}
 }
 

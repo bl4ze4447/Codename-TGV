@@ -6,4 +6,3 @@ uint32 strlen(const char *s) {
 
     return sc - s;
 }
-

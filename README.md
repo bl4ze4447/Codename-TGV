@@ -20,6 +20,7 @@ You need: make, nasm, gcc, ld, cat, qemu-system-x86_64 and rm. Most of them come
 * [Intel® 64 and IA-32 Architectures Software Developer Manuals](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html)
 * [OSDev Wiki](https://wiki.osdev.org/)
 * [x86 Instruction Set](https://www.felixcloutier.com/x86/)
+* [osdever](http://www.osdever.net/FreeVGA/vga/portidx.htm)
 
 ## License
 This repository is licensed under the ```MIT License```.

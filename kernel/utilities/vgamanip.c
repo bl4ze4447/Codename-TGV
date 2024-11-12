@@ -1,4 +1,5 @@
 #include "vgamanip.h"
+#include "../drivers/port_io.h"
 
 void init_vga_tm(vga_tm *out) {
     out->row = 0;
@@ -8,29 +9,86 @@ void init_vga_tm(vga_tm *out) {
     out->mem = (volatile uint16*)VGA_ADDRESS;
 }
 
+void set_foreground(vga_color *fg, vga_color color) {
+    if (!fg) return;
+
+    *fg = color;
+}
+void set_background(vga_color *bg, vga_color color) {
+    if (!bg) return;
+
+    *bg = color;
+}
+void set_color_attribute(vga_tm *out, vga_color bg, vga_color fg) {
+    if (!out) return;
+
+    out->bg = bg;
+    out->fg = fg;
+}
+
 void write(vga_tm *out, const char *s) {
     if (!out) return;
 
     for (; *s != '\0'; ++s) {
-        if (out->column == VGA_COLUMNS) {
+        if (*s == '\n') {
+            out->row += 1;
             out->column = 0;
-            ++out->row;
+
             if (out->row == VGA_ROWS) {
-                out->row = 0;
-                out->column = 0;
+                // scroll down
+                __scroll(out);
             }
+
+            continue;
         }
 
-        // Write character and attributes to VGA memory
         out->mem[(out->row * VGA_COLUMNS) + out->column++] = (*s) | ((out->fg | (out->bg << 4)) << 8);
     }
+
+    __set_cursor(out->row, out->column);
 }
 void write_line(vga_tm *out, const char *s) {
     write(out, s);
 
-    ++out->row;
+    out->row += 1;
     out->column = 0;
-    if (out->row == VGA_ROWS) {
-        out->row = 0;
+    if (out->row == VGA_ROWS) __scroll(out);
+}
+void clear_screen(vga_tm *out) {
+    uint8 r = 0, c;
+    for (; r < VGA_ROWS; ++r) {
+        for (c = 0; c < VGA_COLUMNS; ++c) {
+            out->mem[(r * VGA_COLUMNS) + c] = (' ') | ((out->fg | (out->bg << 4)) << 8);
+        }
+    } 
+    
+    __set_cursor(0, 0);
+}
+
+static void __scroll(vga_tm *out) {
+    uint8 r = 0, c;
+    for (; r < VGA_ROWS-1; ++r) {
+        for (c = 0; c < VGA_COLUMNS; ++c) {
+            out->mem[(r * VGA_COLUMNS) + c] = out->mem[((r+1) * VGA_COLUMNS) + c];
+        }
     }
+    for (c = 0; c < VGA_COLUMNS; ++c) { 
+        out->mem[(r * VGA_COLUMNS) + c] = (' ') | ((out->fg | (out->bg << 4)) << 8);
+    }
+
+    out->row = VGA_ROWS-2;
+    out->column = 0;
+    __set_cursor(out->row, out->column);
+}
+void __set_cursor(uint8 r, uint8 c) {
+    uint16 offset = (r * VGA_COLUMNS) + c;
+    byte crtc_address = read_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER);
+
+    write_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER, CURSOR_LOCATION_HIGH);
+    write_port_b(CRTC_CONTROLLER_DATA_REGISTER, offset >> 8);
+    write_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER, CURSOR_LOCATION_LOW);
+    write_port_b(CRTC_CONTROLLER_DATA_REGISTER, offset);
+
+    // restore CRTC_CONTROLLER_ADDRESS
+    write_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER, crtc_address);
 }

@@ -6,7 +6,7 @@ I do not remember how I stumbled upon [Nick Blundell's book](https://www.cs.bham
 I always wanted to start programming something that would be considered low-level but I never knew how to do it; I did not know assembly at all, but this book really helped me understand it better and...bonus points: 
 * I am able to put this knowledge into something really cool! (at least for me)
 
-![Preview](https://i.imgur.com/FVTo4ob.png)
+![Preview](https://i.imgur.com/LDdeAsP.png)
 
 ## Build and usage
 Use ```make run``` to compile and run the file.

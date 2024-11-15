@@ -47,13 +47,17 @@ load_kernel:
 [bits 32]
 
 BEGIN_PM:
+    mov ebx, MSG_PM_SWITCHED
+    call print_string32
+    
     call KERNEL_OFFSET          ; give control to kernel
 
     jmp $
 
 BOOT_DRIVE              db 0
-MSG_KERNEL_LOADED       db '(16-bit) Succesfully loaded kernel in memory.', 0
-MSG_A20_INACTIVE        db '(16-bit) Could not activate a20 line, stopped.', 0
+MSG_KERNEL_LOADED       db '16: Kernel loaded in memory', 0
+MSG_A20_INACTIVE        db 'ERR16: A20 cannot be enabled', 0
+MSG_PM_SWITCHED         db '32: Protected mode enabled', 0
 
 times 510-($-$$) db 0   ; padding
 dw 0xaa55               ; magic number

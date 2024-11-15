@@ -60,11 +60,11 @@ _check_a20_gate_status:
     jnc _enable_a20_gate
     mov ax, 0               ; cannot get status
     ret
-_enable_a20_gate 
+_enable_a20_gate: 
     mov ax, 0x2401
     int 0x15
     call is_a20_enabled
     ret
 
 a20_below: db 0
-a20_above db 0
+a20_above: db 0

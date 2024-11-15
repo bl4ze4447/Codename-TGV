@@ -3,11 +3,9 @@ HEADERS 	= $(wildcard kernel/utilities/*.h kernel/drivers/*.h)
 
 OBJ = ${C_SOURCES:.c=.o}
 
-CFLAGS+="-fno-stack-protector"
 CFLAGS+="-ffreestanding"
 CFLAGS+="-m32"
 CFLAGS+="-fno-pic"
-CFLAGS+="-fno-strict-aliasing"
 CFLAGS+="-nostdlib"
 
 KERNEL="kernel/kernel.c"
@@ -30,11 +28,11 @@ os_image: kernel.bin bootsector.bin
 # Create the binary files from the kernel and kernel_entry
 # object files
 kernel.bin: kernel.o kernel_entry.o ${OBJ}
-	ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_O) $(KERNEL_LINK_O) $(OBJ) --oformat binary --entry main
+	i386-elf-ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_O) $(KERNEL_LINK_O) $(OBJ) --oformat binary --entry main
 
 # Create the kernel object file
 kernel.o:
-	gcc $(CFLAGS) -c $(KERNEL) -o $(KERNEL_O)
+	i386-elf-gcc $(CFLAGS) -c $(KERNEL) -o $(KERNEL_O)
 
 # Create the kernel_entry object file
 kernel_entry.o:

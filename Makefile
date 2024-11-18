@@ -28,7 +28,7 @@ os_image: kernel.bin bootloader.bin
 # Create the binary files from the kernel and kernel_entry
 # object files
 kernel.bin: kernel.o kernel_entry.o ${OBJ}
-	i386-elf-ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_O) $(KERNEL_LINK_O) $(OBJ) --oformat binary --entry main
+	i386-elf-ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_LINK_O) $(OBJ) $(KERNEL_O) --oformat binary --entry main
 
 # Create the kernel object file
 kernel.o:

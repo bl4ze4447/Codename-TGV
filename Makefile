@@ -18,17 +18,17 @@ bootloader_BIN="boot/bin/bootloader.bin"
 
 # Run the built image
 run: os_image
-	qemu-system-i386 -drive file=os-image,format=raw
+	qemu-system-i386 -drive file=os-image.bin,format=raw
 
 # Create the os image from the kernel and bootloader 
 # binary files
 os_image: kernel.bin bootloader.bin
-	cat $(bootloader_BIN) $(KERNEL_BIN) > os-image
+	cat $(bootloader_BIN) $(KERNEL_BIN) > os-image.bin
 
 # Create the binary files from the kernel and kernel_entry
 # object files
 kernel.bin: kernel.o kernel_entry.o ${OBJ}
-	i386-elf-ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_LINK_O) $(OBJ) $(KERNEL_O) --oformat binary --entry main
+	i386-elf-ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_LINK_O) $(KERNEL_O) $(OBJ) --oformat binary
 
 # Create the kernel object file
 kernel.o:

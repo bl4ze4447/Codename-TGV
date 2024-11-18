@@ -46,7 +46,6 @@ print_string:
 new_line:
     ; Store original values
     push ax
-    push bx
 
     ; Print a newline
     mov al, 10 
@@ -54,18 +53,11 @@ new_line:
     int 0x10
 
     ; Get the cursor position
-    mov ah, 0x03
-    mov bh, 0
-    int 0x10
-
-    ; Update the cursor position to the start of the newline
-    mov ah, 0x02
-    mov dl, 0
+    mov al, 13
     int 0x10
 
     ; Cleanup
     pop bx
-    pop ax
     ret
 
 ; function print_line

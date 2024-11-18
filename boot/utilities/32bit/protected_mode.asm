@@ -1,24 +1,43 @@
 [bits 16]
+; function switch_to_pm
+; Description: Disables interrupts, loads the GDT Descriptor, sets the
+;           Protection Enable bit to 1 and does a far jump to switch the
+;           CPU to 32 bit mode
+;           
+; @params_registers         ->  none
+; @returns                  ->  none
 switch_to_pm:
-    cli                     ; disable interrupts until we set-up the protected mode interrupt vector
-    lgdt [gdt_descriptor]   ; load GDT
-    mov eax, cr0            ; cannot modify cr0 directly
-    or eax, 0x1             ; set Protection Enable (PE) bit to 1
+    ; Disable BIOS Interrupts and load the GDT Descriptor
+    cli                     
+    lgdt [gdt_descriptor]   
+
+    ; Set the Protection Enable bit to 1 to make the switch to 32bit mode
+    mov eax, cr0            
+    or eax, 0x1            
     mov cr0, eax
 
-    jmp CODE_SEG:init_pm    ; far jump (to new segment) to flush the cache of pre-fetched and real-mode decoded instructions
+    ; Do a far jump to flush the cache of pre-feetched instructions
+    jmp CODE_SEG:init_pm
 
 [bits 32]
+; function init_pm
+; Description: Updates the segments and stack pointer and returns to the bootloader
+;           where it gives control to the kernel
+;           
+; @params_registers         ->  none
+; @returns                  ->  none
 init_pm:
-
-    mov ax, DATA_SEG        ; update old segments
+    ; Update the old segments to the new GDT offsets
+    mov ax, DATA_SEG
     mov ds, ax
     mov ss, ax
     mov es, ax 
     mov fs, ax 
     mov gs, ax 
 
-    mov ebp, 0x90000        ; update stack position at top of free space
+    ; Update the stack
+    mov ebp, 0x90000
     mov esp, ebp 
 
-    call BEGIN_PM
+    ; Go back to bootloader and give control to the kernel
+    call switch_to_kernel

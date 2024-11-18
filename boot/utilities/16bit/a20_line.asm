@@ -1,70 +1,79 @@
 [bits 16]
-; bootsector 0xAA55 located at 0000:7DFE
-is_a20_enabled:
+; function get_a20_state
+; Description: Checks if the A20 Line is enabled by writing different
+;           values in memory below 1MB and its warp equivalent above 1MB,
+;           after which it compares the values. Different values mean
+;           the A20 Line is enabled and no warp is happening. Same
+;           values mean the A20 Line is disabled.
+;           
+; @params_registers         ->  none
+; @returns                  ->  (AX=1) if A20 Line is enabled
+;                               (AX=0) if A20 Line is disabled
+get_a20_state:
+    ; Disable the BIOS interrupts and save the segment registers/flags value
+    cli 
     pushf           
     push ds
     push es 
     push di
     push si
-    cli 
 
-    ; ds:si 0x0000:0x0500
+    ; ES:DI will point to 0000:7DFE, the bootsector identifier precisely
     xor ax, ax          
-    mov ds, ax  
-    mov si, 0x0500
+    mov es, ax  
+    mov di, 0x7DFE
 
-    ; es:di 0xFFFF:0x0510
+    ; DS:SI will point to FFFF:7E0E, its warp equivalent above 1MB
     not ax              
-    mov es, ax
-    mov di, 0x0510
+    mov ds, ax
+    mov si, 0x7E0E
 
-    ; save values on ds:si
-    mov al, [ds:si]
-    mov byte [a20_below], al
-    mov al, [es:di]
-    mov byte [a20_above], al
-
+    ; Assume that the A20 is enabled
     mov ah, 1
-    mov byte [ds:si], 1 ; [0x0000:0x0500]
-    mov byte [es:di], 0 ; [0xFFFF:0x0510]
 
+    ; Store original values of the segments to restore them after
+    ; the function call
+    mov al, [es:di]
+    mov byte [.BELOW_1MB], al
+    mov al, [ds:si]
+    mov byte [.ABOVE_1MB], al
+
+    ; Write different values
+    mov byte [ds:si], 0xF 
+    mov byte [es:di], 0x0  
+
+    ; Get the value stored in DS:SI after the write
+    ; and compare it to the one stored in ES:DI
+    ; to check if it wrote to the same memory address
     mov al, byte [ds:si]
     cmp al, [es:di]
-    mov ah, 1
-    jne _a20_enabled
+    jne .a20_cleanup
+
+    ; If we did not jump it means the A20 is not enabled
+    ; and our assumption was not right, we must decrease AH
     dec ah
 
-_a20_enabled:
-    mov al, [a20_below]
-    mov [ds:si], al
-    mov al, [a20_above]
+.a20_cleanup:
+    ; Restore original values
+    mov al, [.BELOW_1MB]
     mov [es:di], al
+    mov al, [.ABOVE_1MB]
+    mov [ds:si], al
+
+    ; Move the return value from AH into AL
+    ; while also clearing previous AL
     shr ax, 8
-    sti
-    pop ds
-    pop es
-    pop di
+
     pop si
+    pop di
+    pop es
+    pop ds
     popf
+    ; Re-enable BIOS interrupts
+    sti
     ret
 
-enable_a20:
-    mov ax, 0x2403
-    int 0x15
-    jnc _check_a20_gate_status
-    mov ax, 0               ; no support for a20
-    ret
-_check_a20_gate_status:
-    mov ax, 0x2402          
-    int 0x15
-    jnc _enable_a20_gate
-    mov ax, 0               ; cannot get status
-    ret
-_enable_a20_gate: 
-    mov ax, 0x2401
-    int 0x15
-    call is_a20_enabled
-    ret
+.BELOW_1MB: db 0
+.ABOVE_1MB: db 0
 
-a20_below: db 0
-a20_above: db 0
+; TODO: A20 Enabling code

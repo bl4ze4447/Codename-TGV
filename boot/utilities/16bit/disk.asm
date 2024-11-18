@@ -1,24 +1,44 @@
-; load DH sectors to ES:BX from drive DL
-disk_load :
-    push dx  
+[bits 16]
+; function load_sectors
+; Description: Uses the BIOS interrupt 0x13 with AH=0x02
+;           to read a number of sectors from a drive's
+;           Cylinder 0, Head 0, ignoring the bootsector
+;           
+; @params_registers         ->  (ES:BX)     = Buffer Address Pointer
+;                           ->  (DL)        = Drive
+;                           ->  (DH)        = Number of sectors 
+; @returns                  ->  (ES:BX=Sectors read) if function is successful
+;                           ->  Hangs if unsuccessful
+load_sectors:
+    push dx 
 
-    mov ah, 0x02            ; BIOS Read Sector
-    mov al, dh              ; DH = num of sectors
-    mov ch, 0x00            ; Cylinder 0
-    mov dh, 0x00            ; Head 0
-    mov cl, 0x02            ; Reading from second sector (omit boot sector)
+    ; Setup parameters
+    mov ah, 0x02
+    ; Sectors to be read
+    mov al, dh  
+    ; Cylinder 0       
+    mov ch, 0x00
+    ; Head 0
+    mov dh, 0x00
+    ; Jump past the bootsector
+    mov cl, 0x02            
     
+    ; BIOS Interrupt
     int 0x13
-    jc _disk_error          ; carry flag = error
 
-    pop dx                  ; for dh
-    cmp dh, al              ; al = sectors read, dh = sectors expected to be read
-    jne _disk_error         ; display error message
+    ; CF is set if function was unsucessful
+    jc .sector_load_error
+
+    ; Restore DX to get back the original count of sectors to be read 
+    ; and compare it to the actual sectors read
+    pop dx
+    cmp dh, al              
+    jne .sector_load_error
     ret
 
-_disk_error :
-    mov bx, DISK_ERROR_MSG
+.sector_load_error:
+    mov bx, .SECTOR_LOAD_ERROR
     call print_string
     jmp $
 
-DISK_ERROR_MSG db " Disk read error !" , 0
+.SECTOR_LOAD_ERROR db "load_sectors failed", 0

@@ -1,11 +1,11 @@
 #ifndef H_PORT_IO
 #define H_PORT_IO 
 
-#include "../utilities/fxs_int.h"
+#include "stdint.h"
 
-byte read_port_b(uint16 port);
-word read_port_w(uint16 port);
-void write_port_b(uint16 port, byte data);
-void write_port_w(uint16 port, word data);
+int8_t read_port_b(uint16_t port);
+uint16_t read_port_w(uint16_t port);
+void write_port_b(uint16_t port, int8_t data);
+void write_port_w(uint16_t port, uint16_t data);
 
 #endif

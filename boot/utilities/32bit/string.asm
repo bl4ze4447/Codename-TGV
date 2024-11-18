@@ -1,24 +1,44 @@
 [bits 32]
-VIDEO_MEMORY        equ 0xb8000     ; start of vga mem address
-WHITE_ON_BLACK      equ 0x0f        ; white text, black background
+; VGA memory is located at 0xb8000
+VIDEO_MEMORY        equ 0xb8000
+; White text on black background     
+WHITE_ON_BLACK      equ 0x0f
 
+
+; function print_string32
+; Description: Prints a string using VGA Text Mode by
+;           rewriting the VIDEO_MEMORY's char and attribute,
+;           making this function usable for debugging only
+;           
+; @params_registers         ->  (EBX)        = Pointer to string
+; @returns                  ->  none
 print_string32:
-    mov ah, WHITE_ON_BLACK          ; set attribute
-    mov edx, VIDEO_MEMORY           ; set memory offset
-    pusha
+    ; Store original values
+    pushf
+    push ax
+    push edx
 
-_print_string32_loop:
+    ; Set attribute and the video memory pointer
+    mov ah, WHITE_ON_BLACK          
+    mov edx, VIDEO_MEMORY           
+
+.print_loop:
+    ; Get next character from EBX and check if it's the null terminator
     mov al, [ebx]
+    cmp al, 0                        
+    jz .cleanup
 
-    cmp al, 0                       ; is it end of string
-    je _print_string32_done
+    ; Write character(al) and attribute(ah) = 2 bytes
+    mov [edx], ax                  
 
-    mov [edx], ax                   ; write character (1 byte char + 1 byte attribute)
-    inc ebx                         ; increment string pointer
-    add edx, 2                      ; increase by 2 (char + attribute)
+    ; Increment the string pointer by one and the memory pointer by two bytes 
+    inc ebx                        
+    add edx, 2
 
-    jmp _print_string32_loop
+    jmp .print_loop
 
-_print_string32_done: 
-    popa 
+.cleanup: 
+    pop edx 
+    pop ax 
+    popf
     ret

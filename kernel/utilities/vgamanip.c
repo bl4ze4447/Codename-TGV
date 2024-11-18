@@ -1,12 +1,15 @@
+// TODO: Check the screen type
+
 #include "vgamanip.h"
 #include "../drivers/port_io.h"
+#include <stdint.h>
 
 void init_vga_tm(vga_tm *out) {
     out->row = 0;
     out->column = 0;
     out->bg = 0;
-    out->fg = 0xF;  // White foreground color
-    out->mem = (volatile uint16*)VGA_ADDRESS;
+    out->fg = 0xF;
+    out->mem = (volatile uint16_t*)VGA_ADDRESS;
 }
 
 void set_foreground(vga_color *fg, vga_color color) {
@@ -19,7 +22,7 @@ void set_background(vga_color *bg, vga_color color) {
 
     *bg = color;
 }
-void set_color_attribute(vga_tm *out, uint8 bg, uint8 fg) {
+void set_color_attribute(vga_tm *out, uint8_t bg, uint8_t fg) {
     if (!out) return;
 
     out->bg = bg;
@@ -55,7 +58,7 @@ void write_line(vga_tm *out, const char *s) {
     if (out->row == VGA_ROWS) __scroll(out);
 }
 void clear_screen(vga_tm *out) {
-    uint8 r = 0, c;
+    uint8_t r = 0, c;
     for (; r < VGA_ROWS; ++r) {
         for (c = 0; c < VGA_COLUMNS; ++c) {
             out->mem[(r * VGA_COLUMNS) + c] = __make_attribute(' ', out->fg, out->bg);
@@ -66,7 +69,7 @@ void clear_screen(vga_tm *out) {
 }
 
 static void __scroll(vga_tm *out) {
-    uint8 r = 0, c;
+    uint8_t r = 0, c;
     for (; r < VGA_ROWS-1; ++r) {
         for (c = 0; c < VGA_COLUMNS; ++c) {
             out->mem[(r * VGA_COLUMNS) + c] = out->mem[((r+1) * VGA_COLUMNS) + c];
@@ -80,9 +83,9 @@ static void __scroll(vga_tm *out) {
     out->column = 0;
     __set_cursor(out->row, out->column);
 }
-static void __set_cursor(uint8 r, uint8 c) {
-    uint16 offset = (r * VGA_COLUMNS) + c;
-    byte crtc_address = read_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER);
+static void __set_cursor(uint8_t r, uint8_t c) {
+    uint16_t offset = (r * VGA_COLUMNS) + c;
+    uint8_t crtc_address = read_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER);
 
     write_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER, CURSOR_LOCATION_HIGH);
     write_port_b(CRTC_CONTROLLER_DATA_REGISTER, offset >> 8);
@@ -92,7 +95,7 @@ static void __set_cursor(uint8 r, uint8 c) {
     // restore CRTC_CONTROLLER_ADDRESS
     write_port_b(CRTC_CONTROLLER_ADDRESS_REGISTER, crtc_address);
 }
-static inline uint16 __make_attribute(char c, uint8 fg, uint8 bg) {
+static inline uint16_t __make_attribute(char c, uint8_t fg, uint8_t bg) {
     // 0000 0000 0000 0000
     // bgbg fgfg cccc cccc
     return c | ((fg | (bg << 4)) << 8);

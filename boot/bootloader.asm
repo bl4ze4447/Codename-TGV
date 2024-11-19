@@ -6,6 +6,13 @@
 [org 0x7c00]
 ; Kernel is located at 0x1000
 KERNEL_OFFSET equ 0x1000
+    
+    xor ax, ax
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
 
     ; BIOS stores the bootdrive in DL
     mov [BOOTDRIVE], dl            

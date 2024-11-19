@@ -15,7 +15,7 @@ void main() {
     set_background(&out.bg, VGA_CYAN);
     write(&out, "* Succesfully running b-ost-kernel\n");
     set_background(&out.bg, VGA_BLACK);
-    write(&out, "> Release date: 18/11/2024\n> Build: 0.0.1 (main.beta.alpha)\n> For more info see: ");
+    write(&out, "> Release date: 18/11/2024\n> Build: 0.0.3 (main.beta.alpha)\n> For more info see: ");
     set_background(&out.bg, VGA_BROWN);
     write(&out, "https://github.com/bl4ze4447/b-ost\n\n");
 

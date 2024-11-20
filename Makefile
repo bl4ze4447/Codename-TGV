@@ -1,14 +1,18 @@
-C_SOURCES 	= $(wildcard kernel/utilities/*.c kernel/drivers/*.c)
+C_SOURCES 	= $(wildcard kernel/utilities/*.cpp kernel/drivers/*.cpp)
 HEADERS 	= $(wildcard kernel/utilities/*.h kernel/drivers/*.h)
 
-OBJ = ${C_SOURCES:.c=.o}
+OBJ = ${C_SOURCES:.cpp=.o}
 
 CFLAGS+="-ffreestanding"
 CFLAGS+="-m32"
+CFLAGS+="-fstack-protector"
 CFLAGS+="-fno-pic"
 CFLAGS+="-nostdlib"
+CFLAGS+="-Wall"
+CFLAGS+="-Wextra"
+CFLAGS+="-std=c++14"
 
-KERNEL="kernel/kernel.c"
+KERNEL="kernel/kernel.cpp"
 KERNEL_O="kernel/bin/kernel.o"
 KERNEL_BIN="kernel/bin/kernel.bin"
 KERNEL_LINK="kernel/kernel_entry.asm"
@@ -43,7 +47,7 @@ bootloader.bin:
 	nasm $(bootloader) -f bin -o $(bootloader_BIN)
 
 #TODO
-%.o : %.c ${HEADERS}
+%.o : %.cpp ${HEADERS}
 	gcc $(CFLAGS) -c $< -o $@
 
 clean:

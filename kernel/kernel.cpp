@@ -1,5 +1,5 @@
 /*
->>  b-ost-kernel <<
+>>  cnb-kernel <<
 > Version 0.0.4 (main.beta.alpha)
 > Author: Belu D. Antonie-Gabriel (bl4ze4447)
 > Release date: 20/11/2024

@@ -1,4 +1,4 @@
-; b-ost-loader
+; cnb_bloader
 ; > Version 0.0.1 (main.beta.alpha)
 ; > Author: Belu D. Antonie-Gabriel (bl4ze4447)
 ; > Release date: 18/11/2024

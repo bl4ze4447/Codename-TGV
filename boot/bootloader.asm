@@ -1,12 +1,10 @@
 ; cnb_bloader
-; > Version 0.0.1 (main.beta.alpha)
+; > Version 0.0.2 (main.beta.alpha)
 ; > Author: Belu D. Antonie-Gabriel (bl4ze4447)
-; > Release date: 18/11/2024
 
 [org 0x7c00]
 ; Kernel is located at 0x1000
 KERNEL_OFFSET equ 0x1000
-    
     xor ax, ax
     mov ds, ax
     mov ss, ax
@@ -27,9 +25,12 @@ KERNEL_OFFSET equ 0x1000
     cmp ax, 1
     jz a20_enabled
     
-    mov bx, MSG_A20_INACTIVE
-    call print_string
-    jmp $
+    ; Safe to jump since if a20 is disabled it cannot continue running
+    call enable_a20
+    jmp a20_enabled
+    
+    ; Also hangs
+    call print_a20_disabled
 
 ; A20 Enabled, we can continue running the bootloader
 a20_enabled:
@@ -57,17 +58,11 @@ load_kernel:
 
 [bits 32]
 switch_to_kernel:
-    ; Show user that we succesfully got into Protected Mode
-    mov ebx, MSG_PM_SWITCHED
-    call print_string32
-
     ; Bootloader's job is done, it's time for the Kernel
     call KERNEL_OFFSET         
     jmp $
 
 BOOTDRIVE               db 0
-MSG_A20_INACTIVE        db 'ERR16: A20 cannot be enabled', 0
-MSG_PM_SWITCHED         db '32: Protected mode enabled', 0
 
 times 510-($-$$) db 0   ; padding
 dw 0xaa55               ; magic number

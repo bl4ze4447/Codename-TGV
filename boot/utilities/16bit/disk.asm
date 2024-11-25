@@ -41,4 +41,4 @@ load_sectors:
     call print_string
     jmp $
 
-.SECTOR_LOAD_ERROR db "load_sectors failed", 0
+.SECTOR_LOAD_ERROR db "bER1", 0

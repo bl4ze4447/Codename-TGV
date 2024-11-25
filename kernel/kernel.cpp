@@ -21,10 +21,10 @@ int main() {
     << "* Succesfully running b-ost-kernel\n"
     << VGAConsole::background(Color::BLACK)
     << "> Version: " << CNB_MAJOR << '.' << CNB_MINOR << '.' << CNB_BUILD << '\n'
-    << "> Release date: 20.11.2024\n"
+    << "> Release date: " << RELEASE_DATE << '\n'
     << "> For more info see: "
     << VGAConsole::background(Color::BROWN)
-    << "https://github.com/bl4ze4447/b-ost\n\n"
+    << "https://github.com/bl4ze4447/cnb-os\n\n"
     << VGAConsole::background(Color::BLACK)
     << "[No user] > "; 
 

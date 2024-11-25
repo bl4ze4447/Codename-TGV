@@ -18,7 +18,7 @@ int main() {
 
     out << Modifier::CLEAR_SCREEN 
     << VGAConsole::background(Color::CYAN) 
-    << "* Succesfully running b-ost-kernel\n"
+    << "* Succesfully running cnb_kernel\n"
     << VGAConsole::background(Color::BLACK)
     << "> Version: " << CNB_MAJOR << '.' << CNB_MINOR << '.' << CNB_BUILD << '\n'
     << "> Release date: " << RELEASE_DATE << '\n'

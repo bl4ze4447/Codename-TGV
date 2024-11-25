@@ -1,9 +1,12 @@
 /*
->>  cnb-kernel <<
-> Version 0.0.4 (main.beta.alpha)
-> Author: Belu D. Antonie-Gabriel (bl4ze4447)
-> Release date: 20/11/2024
-*/
+    cnb_kernel
+    Author: Belu D. Antonie-Gabriel
+ */
+
+#define RELEASE_DATE    "25/11/2024"
+#define CNB_MAJOR       "0"
+#define CNB_MINOR       "0"
+#define CNB_BUILD       "5"
 
 #include "utilities/vga_console.h"
 #include "utilities/vga_types.h"
@@ -17,13 +20,13 @@ int main() {
     << VGAConsole::background(Color::CYAN) 
     << "* Succesfully running b-ost-kernel\n"
     << VGAConsole::background(Color::BLACK)
-    << "> Build: 0.0.4 (main.beta.alpha)\n"
+    << "> Version: " << CNB_MAJOR << '.' << CNB_MINOR << '.' << CNB_BUILD << '\n'
     << "> Release date: 20.11.2024\n"
     << "> For more info see: "
     << VGAConsole::background(Color::BROWN)
     << "https://github.com/bl4ze4447/b-ost\n\n"
     << VGAConsole::background(Color::BLACK)
-    << "[Guest] > "; 
+    << "[No user] > "; 
 
     while (true) ;
 

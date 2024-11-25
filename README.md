@@ -5,7 +5,7 @@ It has its own bootloader and kernel:
 * cnb_bloader, built in NASM, which fits in 512b
 * cnb_kernel, built in C++
 
-![Preview](https://i.imgur.com/LDdeAsP.png)
+![Preview](https://i.imgur.com/vzqv07I.png)
 
 ## Build and usage
 Use ```make run``` to compile and run the file.

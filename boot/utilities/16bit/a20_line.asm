@@ -210,4 +210,4 @@ print_a20_disabled:
     call print_string
     jmp $
 
-MSG_A20_INACTIVE db 'ERR20', 0
+MSG_A20_INACTIVE db 'bER20', 0

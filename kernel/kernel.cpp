@@ -8,8 +8,8 @@
 #define CNB_MINOR       "0"
 #define CNB_BUILD       "5"
 
-#include "utilities/vga_console.h"
-#include "utilities/vga_types.h"
+#include "drivers/vga_console.h"
+#include "drivers/vga_types.h"
 using Color = VGA::Color;
 using Modifier = VGA::Modifier;
 

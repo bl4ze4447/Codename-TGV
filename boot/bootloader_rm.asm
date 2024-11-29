@@ -1,9 +1,9 @@
-; cnb_bloader
-; > Version 0.0.2 (main.beta.alpha)
-; > Author: Belu D. Antonie-Gabriel (bl4ze4447)
+; cnb_bloader_rm
+; > Version 0.0.4 (main.beta.alpha)
+; > Author: bl4ze4447
 
 [org 0x7c00]
-; Kernel is located at 0x1000
+BOOTLOADER_PM equ 0x800
 KERNEL_OFFSET equ 0x1000
     xor ax, ax
     mov ds, ax
@@ -34,33 +34,37 @@ KERNEL_OFFSET equ 0x1000
 
 ; A20 Enabled, we can continue running the bootloader
 a20_enabled:
-    call load_kernel         
-    call switch_to_pm
-
+    call load_boot_pm
+    call load_kernel
+    call BOOTLOADER_PM
+    
     jmp $
 
-%include "boot/gdt.asm"
 %include "boot/utilities/16bit/a20_line.asm"
 %include "boot/utilities/16bit/string.asm"
 %include "boot/utilities/16bit/disk.asm"
-%include "boot/utilities/32bit/string.asm"
-%include "boot/utilities/32bit/protected_mode.asm"
 
 [bits 16]
-; Loading 15 sectors is enough for the kernel to be loaded in
-load_kernel:
-    mov bx, KERNEL_OFFSET  
-    mov dh, 15                 
-    mov dl, [BOOTDRIVE]       
+; Load the second part of the bootloader
+load_boot_pm:
+    mov bx, BOOTLOADER_PM  
+    mov dh, 1                 
+    mov dl, [BOOTDRIVE]  
+    mov cl, 0x02     
     call load_sectors
     
     ret
 
-[bits 32]
-switch_to_kernel:
-    ; Bootloader's job is done, it's time for the Kernel
-    call KERNEL_OFFSET         
-    jmp $
+[bits 16]
+; Load the kernel (7680 bytes is enough)
+load_kernel:
+    mov bx, KERNEL_OFFSET  
+    mov dh, 15                 
+    mov dl, [BOOTDRIVE] 
+    mov cl, 0x03      
+    call load_sectors
+    
+    ret
 
 BOOTDRIVE               db 0
 

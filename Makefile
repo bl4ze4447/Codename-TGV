@@ -10,24 +10,26 @@ CFLAGS+="-fno-pic"
 CFLAGS+="-nostdlib"
 CFLAGS+="-Wall"
 CFLAGS+="-Wextra"
-CFLAGS+="-std=c++14"
+CFLAGS+="-std=c++11"
 
 KERNEL="kernel/kernel.cpp"
 KERNEL_O="kernel/bin/kernel.o"
 KERNEL_BIN="kernel/bin/kernel.bin"
 KERNEL_LINK="kernel/kernel_entry.asm"
 KERNEL_LINK_O="kernel/bin/kernel_entry.o"
-bootloader="boot/bootloader.asm"
-bootloader_BIN="boot/bin/bootloader.bin"
-
-# Run the built image
-run: os_image
-	qemu-system-i386 -drive file=os-image.bin,format=raw
+BOOTLOADER_PM="boot/bootloader_pm.asm"
+BOOTLOADER_RM="boot/bootloader_rm.asm"
+BOOTLOADER_BIN_PM="boot/bin/bootloader_pm.bin"
+BOOTLOADER_BIN_RM="boot/bin/bootloader_rm.bin"
 
 # Create the os image from the kernel and bootloader 
 # binary files
-os_image: kernel.bin bootloader.bin
-	cat $(bootloader_BIN) $(KERNEL_BIN) > os-image.bin
+image: kernel.bin bootloader_rm.bin bootloader_pm.bin
+	cat $(BOOTLOADER_BIN_RM) $(BOOTLOADER_BIN_PM) $(KERNEL_BIN) > image.bin
+
+# Run the built image
+run: image
+	qemu-system-i386 -drive file=image.bin,format=raw
 
 # Create the binary files from the kernel and kernel_entry
 # object files
@@ -42,9 +44,10 @@ kernel.o:
 kernel_entry.o:
 	nasm $(KERNEL_LINK) -f elf -o $(KERNEL_LINK_O)
 
-# Create the bootloader object file
-bootloader.bin:
-	nasm $(bootloader) -f bin -o $(bootloader_BIN)
+# Create the bootloader object files
+bootloader_rm.bin bootloader_pm.bin:
+	nasm $(BOOTLOADER_RM) -f bin -o $(BOOTLOADER_BIN_RM)
+	nasm $(BOOTLOADER_PM) -f bin -o $(BOOTLOADER_BIN_PM)
 
 #TODO
 %.o : %.cpp ${HEADERS}

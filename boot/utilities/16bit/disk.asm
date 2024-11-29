@@ -7,10 +7,12 @@
 ; @params_registers         ->  (ES:BX)     = Buffer Address Pointer
 ;                           ->  (DL)        = Drive
 ;                           ->  (DH)        = Number of sectors 
+;                           ->  (CS)        = Sector to start from
 ; @returns                  ->  (ES:BX=Sectors read) if function is successful
 ;                           ->  Hangs if unsuccessful
 load_sectors:
     push dx 
+    push cx
 
     ; Setup parameters
     mov ah, 0x02
@@ -20,8 +22,6 @@ load_sectors:
     mov ch, 0x00
     ; Head 0
     mov dh, 0x00
-    ; Jump past the bootsector
-    mov cl, 0x02            
     
     ; BIOS Interrupt
     int 0x13
@@ -29,8 +29,9 @@ load_sectors:
     ; CF is set if function was unsucessful
     jc .sector_load_error
 
-    ; Restore DX to get back the original count of sectors to be read 
+    ; Restore DX and CX to get back the original count of sectors to be read 
     ; and compare it to the actual sectors read
+    pop cx
     pop dx
     cmp dh, al              
     jne .sector_load_error

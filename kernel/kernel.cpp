@@ -1,6 +1,6 @@
 /*
     cnb_kernel
-    Author: Belu D. Antonie-Gabriel
+    Author: bl4ze4447
  */
 
 #define RELEASE_DATE    "25/11/2024"

@@ -8,15 +8,15 @@
 #define CNB_MINOR       "0"
 #define CNB_BUILD       "5"
 
-#include "drivers/vga_console.h"
-#include "drivers/vga_types.h"
+#include "video/vga_console.h"
+#include "video/vga_types.h"
 using Color = VGA::Color;
 using Modifier = VGA::Modifier;
 
 int main() {
-    VGAConsole out;
+    VGAConsole kout;
 
-    out << Modifier::CLEAR_SCREEN 
+    kout << Modifier::CLEAR_SCREEN 
     << VGAConsole::background(Color::CYAN) 
     << "* Succesfully running cnb_kernel\n"
     << VGAConsole::background(Color::BLACK)

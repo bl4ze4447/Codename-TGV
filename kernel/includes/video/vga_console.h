@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#include "memory.h"
-#include "vga_types.h"
+#include "memory/memory.h"
+#include "video/vga_types.h"
 
 class VGAConsole {
 public:

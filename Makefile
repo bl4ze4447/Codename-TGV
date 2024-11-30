@@ -1,62 +1,84 @@
-C_SOURCES 	= $(wildcard kernel/utilities/*.cpp kernel/drivers/*.cpp)
-HEADERS 	= $(wildcard kernel/utilities/*.h kernel/drivers/*.h)
+# General paths
+UTILITIES_PATH		= kernel/utilities/
+DRIVERS_PATH		= kernel/drivers/
+INCLUDES_PATH		= kernel/includes
+OBJECT_PATH			= kernel/objects/
+KERNEL_BIN_PATH		= kernel/bin/
+BOOTLOADER_BIN_PATH	= boot/bin/
 
-OBJ = ${C_SOURCES:.cpp=.o}
+# Source, headers and objects
+DRIVERS_SRC         = $(wildcard $(DRIVERS_PATH)*/*.cpp)
+UTILITIES_SRC       = $(wildcard $(UTILITIES_PATH)*/*.cpp)
+HEADERS             = $(wildcard $(INCLUDES_PATH)*/*.h)
 
-CFLAGS+="-ffreestanding"
-CFLAGS+="-m32"
-CFLAGS+="-fstack-protector"
-CFLAGS+="-fno-pic"
-CFLAGS+="-nostdlib"
-CFLAGS+="-Wall"
-CFLAGS+="-Wextra"
-CFLAGS+="-std=c++11"
+DRIVERS_OBJECTS     = $(patsubst %,$(OBJECT_PATH)%,$(notdir $(DRIVERS_SRC:.cpp=.o)))
+UTILITIES_OBJECTS   = $(patsubst %,$(OBJECT_PATH)%,$(notdir $(UTILITIES_SRC:.cpp=.o)))
 
-KERNEL="kernel/kernel.cpp"
-KERNEL_O="kernel/bin/kernel.o"
-KERNEL_BIN="kernel/bin/kernel.bin"
-KERNEL_LINK="kernel/kernel_entry.asm"
-KERNEL_LINK_O="kernel/bin/kernel_entry.o"
-BOOTLOADER_PM="boot/bootloader_pm.asm"
-BOOTLOADER_RM="boot/bootloader_rm.asm"
-BOOTLOADER_BIN_PM="boot/bin/bootloader_pm.bin"
-BOOTLOADER_BIN_RM="boot/bin/bootloader_rm.bin"
+# C++ compile flags
+CPPFLAGS 	+= -ffreestanding
+CPPFLAGS 	+= -m32
+CPPFLAGS 	+= -fstack-protector
+CPPFLAGS 	+= -fno-pic
+CPPFLAGS 	+= -nostdlib
+CPPFLAGS 	+= -Wall
+CPPFLAGS 	+= -Wextra
+CPPFLAGS 	+= -std=c++17
+CPPFLAGS 	+= -I$(INCLUDES_PATH)
 
-# Create the os image from the kernel and bootloader 
-# binary files
-image: kernel.bin bootloader_rm.bin bootloader_pm.bin
-	cat $(BOOTLOADER_BIN_RM) $(BOOTLOADER_BIN_PM) $(KERNEL_BIN) > image.bin
+# LD Flags
+LDFLAGS_BIN += -m elf_i386
+LDFLAGS_O	+= -Ttext 0x1000
+LDFLAGS_O	+= --oformat binary
 
-# Run the built image
+# Source paths 
+PKERNEL 			= kernel/kernel.cpp
+PKERNEL_ENTRY		= kernel/kernel_entry.asm
+PBOOTL_PART1		= boot/bootloader_rm.asm
+PBOOTL_PART2		= boot/bootloader_pm.asm
+# Object paths	
+PKERNEL_OBJ			= $(OBJECT_PATH)$(notdir $(PKERNEL:.cpp=.o))
+PKERNEL_ENTRY_OBJ	= $(OBJECT_PATH)$(notdir $(PKERNEL_ENTRY:.asm=.o))
+# Binaries paths
+PKERNEL_BIN			= $(KERNEL_BIN_PATH)$(notdir $(PKERNEL:.cpp=.bin))
+PBOOTL_PART1_BIN	= $(BOOTLOADER_BIN_PATH)$(notdir $(PBOOTL_PART1:.asm=.bin))
+PBOOTL_PART2_BIN	= $(BOOTLOADER_BIN_PATH)$(notdir $(PBOOTL_PART2:.asm=.bin))
+PBOOTL_BIN			= $(BOOTLOADER_BIN_PATH)bootloader.bin
+
+
+# Create OS image
+image: bootloader.bin kernel.bin
+	cat $(PBOOTL_BIN) $(PKERNEL_BIN) > image.bin
+
+# Run the OS Image in Qemu
 run: image
 	qemu-system-i386 -drive file=image.bin,format=raw
 
-# Create the binary files from the kernel and kernel_entry
-# object files
-kernel.bin: kernel.o kernel_entry.o ${OBJ}
-	i386-elf-ld -m elf_i386 -o $(KERNEL_BIN) -Ttext 0x1000 $(KERNEL_LINK_O) $(KERNEL_O) $(OBJ) --oformat binary
+# Make the kernel binary
+kernel.bin: kernel_entry.o kernel.o $(DRIVERS_SRC:.cpp=.o) $(UTILITIES_SRC:.cpp=.o)
+	i386-elf-ld $(LDFLAGS_BIN) -o $(PKERNEL_BIN) $(LDFLAGS_O) $(PKERNEL_ENTRY_OBJ) $(PKERNEL_OBJ) $(UTILITIES_OBJECTS) $(DRIVERS_OBJECTS)
 
-# Create the kernel object file
+# Make the kernel object
 kernel.o:
-	i386-elf-gcc $(CFLAGS) -c $(KERNEL) -o $(KERNEL_O)
+	i386-elf-gcc $(CPPFLAGS) -c $(PKERNEL) -o $(PKERNEL_OBJ)
 
-# Create the kernel_entry object file
+# Make the kernel_entry object
 kernel_entry.o:
-	nasm $(KERNEL_LINK) -f elf -o $(KERNEL_LINK_O)
+	nasm $(PKERNEL_ENTRY) -f elf -o $(PKERNEL_ENTRY_OBJ)
 
-# Create the bootloader object files
-bootloader_rm.bin bootloader_pm.bin:
-	nasm $(BOOTLOADER_RM) -f bin -o $(BOOTLOADER_BIN_RM)
-	nasm $(BOOTLOADER_PM) -f bin -o $(BOOTLOADER_BIN_PM)
+# Make the bootloader binary from the two parts
+bootloader.bin:
+	nasm $(PBOOTL_PART1) -f bin -o $(PBOOTL_PART1_BIN)
+	nasm $(PBOOTL_PART2) -f bin -o $(PBOOTL_PART2_BIN)
+	cat $(PBOOTL_PART1_BIN) $(PBOOTL_PART2_BIN) > $(PBOOTL_BIN) 
 
-#TODO
-%.o : %.cpp ${HEADERS}
-	gcc $(CFLAGS) -c $< -o $@
+# Drivers and utilities object
+%.o: %.cpp $(HEADERS)
+	i386-elf-gcc $(CPPFLAGS) -c $< -o $(OBJECT_PATH)$(notdir $@)
 
+# Delete all binaries and objects
 clean:
-	rm -rf os-image 
-	rm -rf kernel/bin/*.o kernel/bin/*.bin 
-	rm -rf boot/bin/*.o boot/bin/*.bin 
-	rm -rf kernel/*.o kernel/*.bin 
-	rm -rf boot/*.o boot/*.bin
-	rm -rf kernel/utilities/*.o
+	rm -rf kernel/objects/*
+	rm -rf kernel/bin/*
+	rm -rf boot/bin/*
+	rm -rf ./*.bin
+	rm -rf ./*.obj

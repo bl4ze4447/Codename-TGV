@@ -1,8 +1,8 @@
 // TODO: Check the screen type
 
-#include "vga_console.h"
-#include "../drivers/port_io.h"
-#include "vga_types.h"
+#include "video/vga_console.h"
+#include "video/vga_types.h"
+#include "port/port_io.h"
 
 using Color = VGA::Color;
 using Modifier = VGA::Modifier;

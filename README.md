@@ -2,7 +2,7 @@
 
 cnb_os is an i386 operating system, built using NASM and C++, without any additional libraries.
 It has its own bootloader and kernel:
-* cnb_bloader, built in NASM, which fits in 512b
+* cnb_bloader, built in NASM, which fits in under 1MB
 * cnb_kernel, built in C++
 
 ![Preview](https://i.imgur.com/vzqv07I.png)

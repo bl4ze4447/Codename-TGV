@@ -58,7 +58,7 @@
 ; Load the kernel (3072 bytes is enough)
 .load_kernel:
     mov bx, .KERNEL_OFFSET  
-    mov dh, 6                 
+    mov dh, 5                 
     mov dl, [.BOOTDRIVE] 
     mov cl, 0x03      
     call load_sectors

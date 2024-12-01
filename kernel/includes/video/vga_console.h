@@ -1,10 +1,9 @@
 #ifndef VGACONSOLE_H
 #define VGACONSOLE_H 
 
-#include <stdint.h>
-
 #include "memory/memory.h"
 #include "video/vga_types.h"
+#include "primitives/fxsint.h"
 
 class VGAConsole {
 public:

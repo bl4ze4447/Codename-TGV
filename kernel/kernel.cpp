@@ -6,7 +6,7 @@
 #define RELEASE_DATE    "25/11/2024"
 #define CNB_MAJOR       "0"
 #define CNB_MINOR       "0"
-#define CNB_BUILD       "5"
+#define CNB_BUILD       "6"
 
 #include "video/vga_console.h"
 #include "video/vga_types.h"
@@ -32,4 +32,3 @@ int main() {
 
     return 0; 
 }
-

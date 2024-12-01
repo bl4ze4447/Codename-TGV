@@ -1,7 +1,7 @@
 #ifndef PORTIO_H
 #define PORTIO_H 
 
-#include "stdint.h"
+#include "primitives/fxsint.h"
 
 int8_t read_port_b(uint16_t port);
 uint16_t read_port_w(uint16_t port);

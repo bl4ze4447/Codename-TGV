@@ -23,6 +23,7 @@ CPPFLAGS 	+= -nostdlib
 CPPFLAGS 	+= -Wall
 CPPFLAGS 	+= -Wextra
 CPPFLAGS 	+= -std=c++17
+CPPFLAGS	+= "-Os"
 CPPFLAGS 	+= -I$(INCLUDES_PATH)
 
 # LD Flags

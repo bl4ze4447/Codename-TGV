@@ -1,7 +1,7 @@
 #ifndef VGATYPES_H
 #define VGATYPES_H
 
-#include <stdint.h>
+#include "primitives/fxsint.h"
 
 namespace VGA {
     enum Color {

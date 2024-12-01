@@ -1,16 +1,20 @@
-# cnb_os, a fun project ![C](https://img.shields.io/badge/Language-C-blue) ![NASM](https://img.shields.io/badge/Assembler-NASM-blue) 
+# Codename-TGV, a fun project ![C](https://img.shields.io/badge/Language-C-blue) ![NASM](https://img.shields.io/badge/Assembler-NASM-blue) 
 
-cnb_os is an i386 operating system, built using NASM and C++, without any additional libraries.
-It has its own bootloader and kernel:
-* cnb_bloader, built in NASM, which fits in under 1MB
-* cnb_kernel, built in C++
+Codename-TGV, x86 Operating System, built upon:
+* Codename-TGV-Bootloader - Fast and ligtweight bootloader, built using NASM. Its size is only 0.001024 megabytes or 1024 bytes.
+* Codename-TGV-Kernel - Minimal and readable, built using C++.
 
 ![Preview](https://i.imgur.com/vzqv07I.png)
 
 ## Build and usage
-Use ```make run``` to compile and run the file.
-You need: make, nasm, gcc, ld, cat, qemu-system-x86_64 and rm. Most of them come preinstalled on various Linux Distros.
-
+```make run``` will build the image and run it using qemu-system-i386.
+## Dependencies
+* i386-elf-gcc
+* i386-elf-ld
+* qemu-system-i386
+* nasm
+* and all other dependencies the above commands need. 
+ 
 ## Upcoming
 - Keyboard driver
 

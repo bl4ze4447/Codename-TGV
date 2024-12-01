@@ -1,5 +1,5 @@
 /*
-    cnb_kernel
+    Codename-TGV-Kernel
     Author: bl4ze4447
  */
 

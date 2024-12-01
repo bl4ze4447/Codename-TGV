@@ -1,4 +1,4 @@
-; cnb_bloader_rm
+; Codename-TGV-Bootloader-Part-1
 ; > Version 0.0.4 (main.beta.alpha)
 ; > Author: bl4ze4447
 

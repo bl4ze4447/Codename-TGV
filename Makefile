@@ -34,8 +34,8 @@ LDFLAGS_O	+= --oformat binary
 # Source paths 
 PKERNEL 			= kernel/kernel.cpp
 PKERNEL_ENTRY		= kernel/kernel_entry.asm
-PBOOTL_PART1		= boot/bootloader_rm.asm
-PBOOTL_PART2		= boot/bootloader_pm.asm
+PBOOTL_PART1		= boot/bootloader_1.asm
+PBOOTL_PART2		= boot/bootloader_2.asm
 # Object paths	
 PKERNEL_OBJ			= $(OBJECT_PATH)$(notdir $(PKERNEL:.cpp=.o))
 PKERNEL_ENTRY_OBJ	= $(OBJECT_PATH)$(notdir $(PKERNEL_ENTRY:.asm=.o))

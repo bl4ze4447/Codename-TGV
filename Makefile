@@ -22,6 +22,7 @@ CPPFLAGS 	+= -fno-pic
 CPPFLAGS 	+= -nostdlib
 CPPFLAGS 	+= -Wall
 CPPFLAGS 	+= -Wextra
+CPPFLAGS	+= -Wpadding
 CPPFLAGS 	+= -std=c++17
 CPPFLAGS	+= "-Os"
 CPPFLAGS 	+= -I$(INCLUDES_PATH)

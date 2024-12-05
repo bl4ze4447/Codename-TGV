@@ -5,6 +5,8 @@ void memcpy(void *dst, void *src, uint32_t bytes) {
     char * d = static_cast<char *>(dst);
     char * s = static_cast<char *>(src);
 
-    while (i < bytes)
-        d[i] = s[i++];
+    while (i < bytes) {
+        d[i] = s[i];
+        ++i;
+    }
 }

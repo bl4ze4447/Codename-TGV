@@ -18,13 +18,13 @@ void main() {
 
     kout << Modifier::CLEAR_SCREEN 
     << VGAConsole::background(Color::CYAN) 
-    << "* Succesfully running cnb_kernel\n"
+    << "* Succesfully running Codename-TGV-Kernel\n"
     << VGAConsole::background(Color::BLACK)
     << "> Version: " << CNB_MAJOR << '.' << CNB_MINOR << '.' << CNB_BUILD << '\n'
     << "> Release date: " << RELEASE_DATE << '\n'
     << "> For more info see: "
     << VGAConsole::background(Color::BROWN)
-    << "https://github.com/bl4ze4447/cnb-os\n\n"
+    << "https://github.com/bl4ze4447/Codename-TGV\n\n"
     << VGAConsole::background(Color::BLACK)
     << "[No user] > "; 
 

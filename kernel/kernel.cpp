@@ -13,7 +13,7 @@
 using Color = VGA::Color;
 using Modifier = VGA::Modifier;
 
-int main() {
+void main() {
     VGAConsole kout;
 
     kout << Modifier::CLEAR_SCREEN 
@@ -29,6 +29,4 @@ int main() {
     << "[No user] > "; 
 
     while (true) ;
-
-    return 0; 
 }

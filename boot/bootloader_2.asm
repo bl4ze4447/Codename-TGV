@@ -6,9 +6,10 @@
 .KERNEL_OFFSET equ 0x1000
 
     call switch_to_pm
+    jmp $
 
-%include "boot/gdt.asm"
-%include "boot/utilities/32bit/protected_mode.asm"
+%include "boot/protected_mode/gdt.asm"
+%include "boot/protected_mode/protected_mode.asm"
 
 [bits 32]
 switch_to_kernel:

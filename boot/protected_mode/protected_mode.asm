@@ -41,3 +41,5 @@ init_pm:
 
     ; Go back to bootloader and give control to the kernel
     call switch_to_kernel
+    jmp $
+    

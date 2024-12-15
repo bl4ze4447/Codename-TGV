@@ -1,2 +1,5 @@
 *.o
 *.bin
+*/*/*/ps2_types.h
+*/*/*/ps2.h
+*/*/legacy/*

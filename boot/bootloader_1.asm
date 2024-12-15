@@ -40,9 +40,9 @@
     
     jmp $
 
-%include "boot/utilities/16bit/a20_line.asm"
-%include "boot/utilities/16bit/string.asm"
-%include "boot/utilities/16bit/disk.asm"
+%include "boot/a20/a20_line.asm"
+%include "boot/print/string16.asm"
+%include "boot/disk/disk.asm"
 
 [bits 16]
 ; Load the second sector of the bootloader

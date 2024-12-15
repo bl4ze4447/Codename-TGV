@@ -8,7 +8,7 @@ BOOTLOADER_BIN_PATH	= boot/bin/
 
 # Source, headers and objects
 DRIVERS_SRC         = $(wildcard $(DRIVERS_PATH)*/*.cpp)
-UTILITIES_SRC       = $(wildcard $(UTILITIES_PATH)*/*.cpp)
+UTILITIES_SRC       = $(wildcard $(UTILITIES_PATH)*.cpp)
 HEADERS             = $(wildcard $(INCLUDES_PATH)*/*.h)
 
 DRIVERS_OBJECTS     = $(patsubst %,$(OBJECT_PATH)%,$(notdir $(DRIVERS_SRC:.cpp=.o)))

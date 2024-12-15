@@ -7,43 +7,35 @@
 
 class VGAConsole {
 public:
-// Namespaces
-    using Color = VGA::Color;      
-    using Modifier = VGA::Modifier;
-    using SpecifiedColor = VGA::SpecifiedColor;
+    VGAConsole& operator<<(const char character);
+    VGAConsole& operator<<(const char* string);
 
-// Operator overloading
-    VGAConsole& operator<<(const char t_ch);
-    VGAConsole& operator<<(const char* t_str);
-    VGAConsole& operator<<(const Modifier t_mod);
-    VGAConsole& operator<<(const SpecifiedColor t_sc);
-
-    static SpecifiedColor background(const Color t_color);
-    static SpecifiedColor foreground(const Color t_color);
-    Color getCurrentBackground();
-    Color getCurrentForeground();
-private:
-// Members
-    uint8_t m_row{0};
-    uint8_t m_col{0};
-    uint8_t m_bg{Color::BLACK};
-    uint8_t m_fg{Color::WHITE};
-    uint16_t * m_VgaMemory{reinterpret_cast<uint16_t *>(0xb8000)};
-
-// Constants
-    const uint8_t MaxRows{25};
-    const uint8_t MaxColumns{80};
-    const uint16_t CrtcCtrlAddrReg{0x3D4};
-    const uint16_t CrtcCtrlDataReg{0x3D5};
-    const uint8_t CursorLocLow{0xF};
-    const uint8_t CursorLocHigh{0xE};
-
-// Functions
+    VGAConsole& operator<<(const vga::Action action);
+    VGAConsole& operator<<(const vga::Color color);
     VGAConsole& operator=(const VGAConsole& other);
-    inline uint16_t makeAttribute(const char t_ch);
-    void scrollScreen(const uint8_t t_rows);
-    void updateCursor();
-    void printChar_noUpdate(const char t_ch);
+
+    vga::Color GetBackground() const;
+    vga::Color GetForeground() const;
+    uint16_t MakeAttribute(const char character) const;
+
+    void Scroll(const uint8_t rows);
+    void CursorUpdate();
+private:
+    uint8_t row_{0};
+    uint8_t col_{0};
+    vga::Color bg_{vga::Color::kBgBlack};
+    vga::Color fg_{vga::Color::kWhite};
+
+    uint16_t * const kVgaMemory{reinterpret_cast<uint16_t *>(0xb8000)};
+    const uint8_t kMaxRows{25};
+    const uint8_t kMaxColumns{80};
+    const uint16_t kCrtcCtrlAddrReg{0x3D4};
+    const uint16_t kCrtcCtrlDataReg{0x3D5};
+    const uint8_t kCursorLocLow{0xF};
+    const uint8_t kCursorLocHigh{0xE};
+
+    void PrintChar_NoCursorUpdate(const char character);
+    void PrintChar(const char character);
 };
 
 #endif

@@ -44,6 +44,6 @@ private:
 
     void PrintChar_NoCursorUpdate(const char character);
     void PrintChar(const char character);
-};
+} __attribute__((packed));
 
 #endif

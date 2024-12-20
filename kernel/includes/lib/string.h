@@ -18,6 +18,6 @@ private:
     char * buffer_{nullptr};
     uint64_t length_{0};
     uint64_t capacity_{0};
-};
+} __attribute__((packed));
 
 #endif

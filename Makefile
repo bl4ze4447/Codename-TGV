@@ -1,5 +1,5 @@
 # General paths
-UTILITIES_PATH		= kernel/utilities/
+LIBS_PATH			= kernel/lib/
 DRIVERS_PATH		= kernel/drivers/
 INCLUDES_PATH		= kernel/includes
 OBJECT_PATH			= kernel/objects/
@@ -8,11 +8,11 @@ BOOTLOADER_BIN_PATH	= boot/bin/
 
 # Source, headers and objects
 DRIVERS_SRC         = $(wildcard $(DRIVERS_PATH)*/*.cpp)
-UTILITIES_SRC       = $(wildcard $(UTILITIES_PATH)*.cpp)
+LIBS_SRC			= $(wildcard $(LIBS_PATH)*.cpp)
 HEADERS             = $(wildcard $(INCLUDES_PATH)*/*.h)
 
 DRIVERS_OBJECTS     = $(patsubst %,$(OBJECT_PATH)%,$(notdir $(DRIVERS_SRC:.cpp=.o)))
-UTILITIES_OBJECTS   = $(patsubst %,$(OBJECT_PATH)%,$(notdir $(UTILITIES_SRC:.cpp=.o)))
+LIBS_OBJECTS	    = $(patsubst %,$(OBJECT_PATH)%,$(notdir $(LIBS_SRC:.cpp=.o)))
 
 # C++ compile flags
 CPPFLAGS 	+= -ffreestanding
@@ -56,8 +56,8 @@ run: image
 	qemu-system-i386 -drive file=image.bin,format=raw
 
 # Make the kernel binary
-kernel.bin: kernel_entry.o kernel.o $(DRIVERS_SRC:.cpp=.o) $(UTILITIES_SRC:.cpp=.o)
-	i386-elf-ld $(LDFLAGS_BIN) -o $(PKERNEL_BIN) $(LDFLAGS_O) $(PKERNEL_ENTRY_OBJ) $(PKERNEL_OBJ) $(UTILITIES_OBJECTS) $(DRIVERS_OBJECTS)
+kernel.bin: kernel_entry.o kernel.o $(DRIVERS_SRC:.cpp=.o) $(LIBS_SRC:.cpp=.o)
+	i386-elf-ld $(LDFLAGS_BIN) -o $(PKERNEL_BIN) $(LDFLAGS_O) $(PKERNEL_ENTRY_OBJ) $(PKERNEL_OBJ) $(LIBS_OBJECTS) $(DRIVERS_OBJECTS)
 
 # Make the kernel object
 kernel.o:

@@ -116,7 +116,7 @@ void VGAConsole::Scroll(const uint8_t rows)
 
 void VGAConsole::CursorUpdate() 
 {
-    uint16_t offset{(row_ * kMaxColumns) + col_};
+    uint16_t offset{static_cast<uint16_t>(row_ * kMaxColumns + col_)};
     uint8_t crtc_address{riob(kCrtcCtrlAddrReg)};
 
     wiob(kCrtcCtrlAddrReg, kCursorLocHigh);

@@ -1,14 +1,22 @@
 #ifndef VGACONSOLE_H
 #define VGACONSOLE_H 
 
-#include "memory/memory.h"
+#include "lib/memory.h"
 #include "video/vga_types.h"
-#include "primitives/fxsint.h"
+#include "lib/fxsint.h"
 
 class VGAConsole {
 public:
     VGAConsole& operator<<(const char character);
     VGAConsole& operator<<(const char* string);
+    VGAConsole& operator<<(short int number);
+    VGAConsole& operator<<(unsigned short int number);
+    VGAConsole& operator<<(int number);
+    VGAConsole& operator<<(unsigned int number);
+    VGAConsole& operator<<(long number);
+    VGAConsole& operator<<(unsigned long number);
+    VGAConsole& operator<<(long long number);
+    VGAConsole& operator<<(unsigned long long number);
 
     VGAConsole& operator<<(const vga::Action action);
     VGAConsole& operator<<(const vga::Color color);

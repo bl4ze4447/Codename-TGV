@@ -24,6 +24,4 @@ void main() {
     << "https://github.com/bl4ze4447/Codename-TGV\n\n"
     << vga::Color::kBgBlack
     << "[No user] > "; 
-
-    while (true) ;
 }

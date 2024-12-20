@@ -1,7 +1,7 @@
 #ifndef VGATYPES_H
 #define VGATYPES_H
 
-#include "primitives/fxsint.h"
+#include "lib/fxsint.h"
 
 namespace vga {
     enum class Color {

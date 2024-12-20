@@ -1,7 +1,7 @@
 #ifndef PORTIO_H
 #define PORTIO_H 
 
-#include "primitives/fxsint.h"
+#include "lib/fxsint.h"
 
 uint8_t riob(uint16_t port);
 uint16_t riow(uint16_t port);

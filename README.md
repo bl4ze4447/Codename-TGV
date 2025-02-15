@@ -1,4 +1,4 @@
-# Codename-TGV, a fun project ![C](https://img.shields.io/badge/Language-C-blue) ![NASM](https://img.shields.io/badge/Assembler-NASM-blue) 
+# Codename-TGV, a fun project ![C](https://img.shields.io/badge/Language-CPP-blue) ![NASM](https://img.shields.io/badge/Assembler-NASM-blue) 
 
 Codename-TGV, x86 Operating System, built upon:
 * Codename-TGV-Bootloader - Fast and ligtweight bootloader, built using NASM. Its size is only 0.001024 megabytes or 1024 bytes.

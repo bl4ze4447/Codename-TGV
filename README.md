@@ -9,12 +9,10 @@ Codename-TGV, x86 Operating System, built upon:
 ## Build and usage
 ```make run``` will build the image and run it using qemu-system-i386.
 ## Dependencies
-* i386-elf-gcc
-* i386-elf-ld
-* qemu-system-i386
-* nasm
-* and all other dependencies the above commands need. 
- 
+* needs an i386 cross-compiler (this project uses gcc)
+* nasm compiler
+* linker
+
 ## Upcoming
 - Keyboard driver
 
@@ -26,11 +24,13 @@ Codename-TGV, x86 Operating System, built upon:
 * [ctyme/intr/](https://www.ctyme.com/intr/) ; rb-1338,1337,1336
 
 ## Bootloader error semnification
-Error that happen in the bootloader follow this format: ```bER{error number}``` (example: ```bER20```)
+Errors that happen in the bootloader follow this format: ```bER{error number}``` (example: ```bER20```)
+This format is used to save space.
 | Error Number   | Description |
 | :----------:   | :---------- |
 | 1              | Either the sector load function failed or it did not read all sectors |
-| 20             | A20 Line could not be enabled |  
+| 20             | A20 Line could not be enabled |
+
 
 ## License
 This repository is licensed under the ```MIT License```.
